@@ -166,22 +166,19 @@ class HangmanGame:
 
     def _update_solver_hint(self):
         """Update the solver hint based on current game state."""
-        if self.correct_guess or self.wrong_guess:
-            valid_words = generate_valid_words(
-                self.word_dict[self.word_length],
-                self.correct_guess,
-                self.wrong_guess
-            )
-            possible_letters = [ltr for _, _, ltr, visible in self.letters if visible]
-            best_letter_message = generate_best_letters(
-                valid_words,
-                possible_letters,
-                self.correct_guess,
-                self.wrong_guess
-            )
-            self.solver_hint = f"Il y a {len(valid_words)} possibilités. {best_letter_message}"
-        else:
-            self.solver_hint = f"La lettre E."
+        valid_words = generate_valid_words(
+            self.word_dict[self.word_length],
+            self.correct_guess,
+            self.wrong_guess
+        )
+        possible_letters = [ltr for _, _, ltr, visible in self.letters if visible]
+        best_letter_message = generate_best_letters(
+            valid_words,
+            possible_letters,
+            self.correct_guess,
+            self.wrong_guess
+        )
+        self.solver_hint = best_letter_message
 
     def draw(self):
         """Draw the game state to the screen."""
