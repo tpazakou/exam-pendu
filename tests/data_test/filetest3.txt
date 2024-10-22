@@ -1,0 +1,10 @@
+devant
+entree
+porter
+gauche
+marier
+couper
+prince
+voisin
+pointe
+saisir

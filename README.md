@@ -26,17 +26,16 @@ Le jeu utilise 5 fichiers contenant des mots de taille variable (entre 6 et 10 l
 
 ## Examen
 L'examen est divisé en 4 parties: 
-1. Une partie du **code**  (5 points) consiste à compléter les scripts solver.py et generate_dicts.py. Le script generate_dicts.py lit un fichier texte et crée des listes de mots en fonction de leur longueur. Le script solver.py permet de conseiller l'utilisateur sur le meilleur choix de lettre à jouer.
-2. Une partie **git**(5 points) qui consiste à montrer votre compréhension en forkant le dépôt de code, en le clonant sur votre machine, en faisant des commit puis le poussant vers votre dépôt à distance.
-3. Une partie **test**(5 points)  montrera votre compréhension des tests avec `pytest`.
-4. Enfin, une partie **documentation** (5 points) consistera à générer la documentation des scripts python du projet.
+1. Une partie du **code**  (6 points) consiste à compléter les scripts solver.py et generate_dicts.py. Le script generate_dicts.py lit un fichier texte et crée des listes de mots en fonction de leur longueur. Le script solver.py permet de conseiller l'utilisateur sur le meilleur choix de lettre à jouer.
+2. Une partie **git**   (5 points) qui consiste à montrer votre compréhension en forkant le dépôt de code, en le clonant sur votre machine, en faisant des commit puis le poussant vers votre dépôt à distance. 
+3. Une partie **test ** (5 points)  montrera votre compréhension des tests avec `pytest`.
+4. Enfin, une partie **documentation** (4 points) consistera à générer la documentation des scripts python du projet.
 
-## I Code
+### I. Code
 
 ***Toutes les fonctions doivent contenir une docstring et des type hints.***
 
-### I.1 Script `generate_dicts`
-Vous devez écrire deux fonctions dans generate_dicts.py :
+Vous devez écrire deux fonctions dans `generate_dicts.py` :
 
 ```python
 def lire_filtrer_mots(chemin_lexique, longueur):
@@ -45,16 +44,31 @@ def lire_filtrer_mots(chemin_lexique, longueur):
 def ecrire_liste_mots(liste_mots, longueur):
     pass
 ```
-**Instructions pour le script**
-Dans ce script, vous devez :
 
-- Lire tous les mots d'un fichier. Extraire les mots de 6 à 10 lettres.
-- Générer 5 fichiers textes (dico_6_lettres.txt, dico_7_lettres.txt, etc.) dans lesquels chaque fichier contiendra les mots d'une certaine longueur (un mot par ligne, séparé par un \n).
-- Supprimer les accents, espaces, tirets et les mots en double, tout ce qui ne correspond pas.
+### I.1 Script `generate_dicts` (2 points)
 
-**Note** : Pour l'instant, les fichiers dico_6_lettres.txt à dico_10_lettres.txt dans le dossier data/ ne contiennent que 10 mots, pour permettre au programme de fonctionner. Vous devez les recréer en utilisant la liste complète fournie dans data/liste_mots.txt.
+1. **Fonction `lire_filtrer_mots`** :
+   - Cette fonction doit lire tous les mots d'un fichier texte (le fichier fourni dans `chemin_lexique`).
+   - Elle doit **filtrer** les mots pour ne conserver que ceux ayant la longueur spécifiée (par exemple, 6, 7, 8, 9 ou 10 lettres).
+   - Les mots doivent être nettoyés en :
+     - **Supprimant les accents**, les espaces, et les tirets.
+     - Éliminant les doublons.
+   - La fonction retourne une **liste Python** contenant uniquement les mots valides ayant la taille spécifiée.
 
-### I.2 Script `solver.py`
+2. **Fonction `ecrire_liste_mots`** :
+   - Cette fonction prend en entrée une **liste de mots** et écrit ces mots dans un fichier texte spécifique selon la longueur des mots.
+   - Le fichier de destination doit être nommé en fonction de la longueur des mots (par exemple, `dico_6_lettres.txt` pour les mots de 6 lettres).
+   - Chaque mot doit être écrit sur une nouvelle ligne dans le fichier, séparé par un saut de ligne (`\n`).
+
+#### **Processus global** :
+- Lire les mots depuis le fichier source (par exemple `data/liste_mots.txt`) et appliquer le filtre pour obtenir les mots de 6 à 10 lettres, grâce à la fonction `lire_filtrer_mots`.
+- Générer 5 fichiers textes (par exemple, `dico_6_lettres.txt`, `dico_7_lettres.txt`, etc.) en écrivant dans chacun les mots correspondants à une longueur donnée, en utilisant la fonction `ecrire_liste_mots`.
+
+---
+
+**Note** : Les fichiers `dico_6_lettres.txt` à `dico_10_lettres.txt` présents dans le dossier `data/` contiennent actuellement seulement 10 mots pour que le programme puisse fonctionner. Vous devez recréer ces fichiers à partir de la liste complète des mots fournie dans `data/liste_mots.txt`.
+
+### I.2 Script `solver.py` (4 points)
 
 Vous devez écrire deux fonctions dans `solver.py` :
 
@@ -68,7 +82,7 @@ def generate_best_letters(possible_words: list, letters_not_played: list[str], l
 
 Ces fonctions sont importées dans `hangman.py` pour générer l'indice donné à l'utilisateur pendant la partie. La fonction `generate_best_letters` retourne directement une chaîne de caractères qui est affichée dans le jeu pour conseiller l'utilisateur sur la prochaine lettre à jouer.
 
-### Fonction `generate_valid_words`
+#### Fonction `generate_valid_words` (2 points)
 
 En fonction des lettres déjà jouées, cette fonction permet d'obtenir la liste des mots encore valides.
 
@@ -84,9 +98,9 @@ En fonction des lettres déjà jouées, cette fonction permet d'obtenir la liste
 
 L'idée est de parcourir la liste des mots possibles et de retirer ceux qui :
 - Contiennent une lettre exclue.
-- Ne respectent pas les positions des lettres déjà trouvées par l'utilisateur. si `letters_in_secret = [(A, 0), (B, 2)]`,  on exclut les mots qui ne commencent pas par un A et qui n'ont pas un B en troisième position.
+- Ne respectent pas les positions des lettres déjà trouvées par l'utilisateur. si `letters_in_secret = [(A, 0), (B, 2)]`,  on exclut les mots qui ne commencent pas par un A <u>ou</u> qui n'ont pas un B en troisième position.
 
-### Fonction `generate_best_letters`
+#### Fonction `generate_best_letters` (2 points)
 
 Cette fonction suggère à l'utilisateur quelle lettre jouer ensuite, en se basant sur la liste des mots valides générée par `generate_valid_words`. Elle prend les paramètres suivants :
 - `possible_words` : La liste des mots encore en jeu après application des règles de `generate_valid_words`.
@@ -98,14 +112,14 @@ Cette fonction retourne une suggestion sous forme de chaîne de caractères, qui
 
 #### Stratégie pour la fonction `generate_best_letters`
 
-Vous êtes libres d'écrire cette fonction comme cela vous arrange. Pensez à écrire une docstring et type hint qui correspondent à ce que fais la fonction. Voici 3 suggestions.
+Vous êtes libres d'écrire cette fonction selon votre préférence. Pensez à écrire une docstring et type hint qui correspondent à ce que fais la fonction. Voici 3 suggestions.
 
-#### 1. **Niveau facile : Choisir une lettre au hasard**
+#### 1. **Niveau facile : Choisir une lettre au hasard** (0.5 point max)
    - **Principe** : On choisit une lettre de manière aléatoire parmi celles qui n'ont pas encore été jouées.
 
      
 
-#### 2. **Niveau moyen : Utiliser la fréquence moyenne par mot**
+#### 2. **Niveau moyen : Utiliser la fréquence moyenne par mot** (2 points)
    - **Principe** : On calcule la fréquence moyenne de chaque lettre par mot. La lettre avec la fréquence moyenne la plus élevée est celle qui a le plus de chances d'être dans le mot mystère.
    
    - **Pseudo-code** :
@@ -120,7 +134,7 @@ Vous êtes libres d'écrire cette fonction comme cela vous arrange. Pensez à é
      $$
      
 
-### 3. **Niveau difficile : Calculer l'impact de chaque lettre**
+### 3. **Niveau difficile : Calculer l'impact de chaque lettre** (2 points + 1 bonus)
 
 Dans cette stratégie, l'objectif est de déterminer quelle lettre élimine le plus de mots possibles parmi les mots restants. Pour cela, on simule le fait de jouer chaque lettre et on mesure combien de mots sont encore possibles après avoir joué cette lettre. La lettre qui, en moyenne, réduit le plus les possibilités est celle que l'on conseille à l'utilisateur.
 
@@ -161,7 +175,7 @@ Dans cette stratégie, l'objectif est de déterminer quelle lettre élimine le p
 Dans cette partie, vous allez montrer votre maîtrise de Git en réalisant les étapes suivantes :
 
 1. **Fork du dépôt** :
-   - Rendez-vous sur le dépôt GitHub du projet.
+   - Depuis le dépôt sur GitHub.
    - Utilisez la fonction **Fork** pour créer une copie de ce dépôt dans votre propre compte GitHub.
 
 2. **Cloner le dépôt** :
@@ -169,7 +183,7 @@ Dans cette partie, vous allez montrer votre maîtrise de Git en réalisant les �
    
 3. **Travail sur les fonctions** :
    - Vous devez écrire et compléter les fonctions dans `generate_dicts.py` et `solver.py`.
-   - Faites des commits quand c'est pertinent. Par exemple, après avoir fini un script ou une fonction
+   - Faites des commits quand c'est pertinent. Par exemple, après avoir fini un script ou une fonction. Après les tests et après la génération de la documentation.
 
 4. **Pousser vos modifications vers GitHub** :
    - Une fois que vous avez fait vos commits, poussez votre code vers votre dépôt GitHub :
@@ -177,7 +191,7 @@ Dans cette partie, vous allez montrer votre maîtrise de Git en réalisant les �
 5. **Partager le dépôt** :
    - Donnez-moi accès à votre dépôt GitHub en tant que **maintainer** :
      - Rendez-vous sur votre dépôt GitHub.
-     - Cliquez sur "Settings" → "Collaborators" → Ajouter `kmichoud@unistra.fr` comme maintainer.
+     - Cliquez sur "Settings" → "Collaborators" → Ajouter `knuxv-alt` comme maintainer.
 
 6. **Bonus** : Créer une branche de développement avec une fonctionnalité supplémentaire :
    
