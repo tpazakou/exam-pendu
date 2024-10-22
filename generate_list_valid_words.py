@@ -40,5 +40,5 @@ def main(path):
         ecrire_liste_mots(lst_mots, longueur=long)
 
 if __name__ == '__main__':
-    chemin = "data/liste_francais.txt"
+    chemin = "data/liste_mots.txt"
     main(path = chemin)
