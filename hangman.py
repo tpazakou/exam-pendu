@@ -50,10 +50,9 @@ for i in range(0, 7):
 def read_words_from_file(length) -> list :
     try:
         with open(f"data/dico_{length}_lettres.txt", "r") as file:
-            words = file.read().splitlines()
-        return words
+            return file.read().splitlines()
     except FileNotFoundError:
-        print(f"Dictionary file for length {length} not found.")
+        print(f"Le dictionnaire de taille {length} n'a pas été trouvé. Il doit s'appeler dico_{length}_lettres.txt.")
         return []
 
 # Game variables
@@ -67,12 +66,12 @@ guessed = []
 correct_guess: list[tuple[str, int]] = []
 wrong_guess = []
 
-letter, nb_bits = generate_best_letters(word_dict[word_length], [letter[2] for letter in letters], correct_guess,
+best_letter_message = generate_best_letters(word_dict[word_length], [letter[2] for letter in letters], correct_guess,
                                         wrong_guess)
 
 solver_hint = (
     f"Il y a {len(word_dict[word_length])} possibilités. "
-    f"Meilleure lettre: {letter} ({nb_bits:.2f} bits)."
+    +best_letter_message
 )
 
 # Function to draw the game board
@@ -172,13 +171,12 @@ while run:
                         valid_words = generate_valid_words(all_words=word_dict[word_length], letter_in=correct_guess, letter_out=wrong_guess)
                         possible_letters = [ltr for x, y, ltr, visible in letters if visible]
                         # Get the top letters to play next
-                        letter, nb_bits  = generate_best_letters(valid_words, possible_letters, correct_guess,
+                        best_letter_message = generate_best_letters(valid_words, possible_letters, correct_guess,
                                                             wrong_guess)
 
 
                         solver_hint = (
-                                f"Il y a {len(valid_words)} possibilités. "
-                                f"Meilleure lettre: {letter} ({nb_bits:.2f} bits)."
+                                f"Il y a {len(valid_words)} possibilités. " + best_letter_message
                             )
 
 

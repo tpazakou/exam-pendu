@@ -16,9 +16,11 @@ def generate_best_letters(valid_words:list, possible_letters:list[str], letter_i
     if nb_valid_words == 1:
         best_letters = set(possible_letters).intersection(valid_words[0])
         if best_letters:
-            return best_letters.pop(), float('inf')
+            # return best_letters.pop(), float('inf')
+            return f"Meilleure lettre: { best_letters.pop()} ({float('inf'):.2f} bits)."
         else:
-            return "Won", float('inf')
+            return "Won"
+
     res: dict[str, float] = {letter: 0 for letter in possible_letters}
 
     # Calculate remaining valid words for each letter across all pretend secret words
@@ -51,9 +53,9 @@ def generate_best_letters(valid_words:list, possible_letters:list[str], letter_i
         for letter, avg in res.items()
     }
     sorted_dic_bits = sorted(dic_bits.items(), key=lambda x: x[1], reverse=True)
+    best_letter, nb_bits = sorted_dic_bits[0]
 
-    # Return up to the top 3 letters with the highest information gain
-    return sorted_dic_bits[0]
+    return f"Meilleure lettre: {best_letter} ({nb_bits:.2f} bits)."
 
 
 
