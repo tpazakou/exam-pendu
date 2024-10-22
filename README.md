@@ -1,7 +1,7 @@
 # Examen Solver pour Pendu
 
-Le code le jeu est inspiré de [geeksforgeeks](https://www.geeksforgeeks.org/hangman-game-with-a-gui-in-python/).
-Les images du pendu viennent de [wikipedia](https://commons.wikimedia.org/wiki/File:Hangman-0.png#file).
+Le code le jeu est inspiré de [geeksforgeeks](https://www.geeksforgeeks.org/hangman-game-with-a-gui-in-python/).  
+Les images du pendu viennent de [wikipedia](https://commons.wikimedia.org/wiki/File:Hangman-0.png#file).  
 Les mots de `data/liste-mots.txt` viennent d' [ici](https://github.com/SinaC/Lexique/blob/master/WordList/liste-mots-alphabetique.txt).
 
 Par: Kévin MICHOUD
@@ -28,7 +28,7 @@ Le jeu utilise 5 fichiers contenant des mots de taille variable (entre 6 et 10 l
 L'examen est divisé en 4 parties: 
 1. Une partie du **code**  (6 points) consiste à compléter les scripts solver.py et generate_dicts.py. Le script generate_dicts.py lit un fichier texte et crée des listes de mots en fonction de leur longueur. Le script solver.py permet de conseiller l'utilisateur sur le meilleur choix de lettre à jouer.
 2. Une partie **git**   (5 points) qui consiste à montrer votre compréhension en forkant le dépôt de code, en le clonant sur votre machine, en faisant des commit puis le poussant vers votre dépôt à distance. 
-3. Une partie **test ** (5 points)  montrera votre compréhension des tests avec `pytest`.
+3. Une partie **test** (5 points)  montrera votre compréhension des tests avec `pytest`.
 4. Enfin, une partie **documentation** (4 points) consistera à générer la documentation des scripts python du projet.
 
 ### I. Code
