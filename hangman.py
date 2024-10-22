@@ -66,8 +66,8 @@ class HangmanGame:
     def _create_footer_buttons(self):
         """Create footer buttons for game control."""
         self.footer_buttons = {
-            "new_game": pygame.Rect(self.WIDTH - 250, self.HEIGHT - 60, 120, 40),
-            "quit": pygame.Rect(self.WIDTH - 120, self.HEIGHT - 60, 80, 40)
+            "Nouvelle Partie": pygame.Rect(self.WIDTH - 400, self.HEIGHT - 60, 180, 40),
+            "Quitter": pygame.Rect(self.WIDTH - 140, self.HEIGHT - 60, 100, 40)
         }
 
     def _read_words_from_file(self, length):
@@ -223,10 +223,10 @@ class HangmanGame:
         x, y = pos
 
         # Check footer buttons
-        if self.footer_buttons["new_game"].collidepoint(x, y):
+        if self.footer_buttons["Nouvelle Partie"].collidepoint(x, y):
             self._init_game_state()
             return True
-        if self.footer_buttons["quit"].collidepoint(x, y):
+        if self.footer_buttons["Quitter"].collidepoint(x, y):
             return False
 
         # Check letter buttons
