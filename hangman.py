@@ -1,215 +1,264 @@
 import pygame
 import math
 import random
-
 from solver import generate_valid_words, generate_best_letters
 
-pygame.init()
-WIDTH, HEIGHT = 1000, 700
-win = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Jeu du Pendu")
 
-FPS = 60
-clock = pygame.time.Clock()
-run = True
+class HangmanGame:
+    """
+    A class representing the Hangman game with a graphical interface and solver hints.
+    """
 
-# Buttons
-radius = 24
-space = 20
-letters = []  # [399,122,"A",True]
-x_start = round((WIDTH - (radius * 2 + space) * 13) / 2)
-y_start = 540
+    def __init__(self):
+        # Initialize Pygame and window settings
+        pygame.init()
+        self.WIDTH, self.HEIGHT = 1000, 700
+        self.win = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        pygame.display.set_caption("Jeu du Pendu")
 
-A = 65  # Using ASCII value to print letters on the button. A->65, B->66 and so on
+        # Game constants
+        self.FPS = 60
+        self.BUTTON_RADIUS = 24
+        self.BUTTON_SPACE = 20
+        self.MAX_TRIES = 6  # Maximum wrong attempts before game over
 
-for i in range(26):
-    x = x_start + space * 2 + ((radius * 2 + space) * (i % 13))
-    y = y_start + ((i // 13) * (space + radius * 2))
-    letters.append([x, y, chr(A + i), True])
+        # Initialize game components
+        self._init_fonts()
+        self._load_images()
+        self._create_letter_buttons()
+        self._create_footer_buttons()
+        self._init_game_state()
 
-# Footer Buttons for new game and quit
-footer_buttons = {
-    "new_game": pygame.Rect(WIDTH - 250, HEIGHT - 60, 120, 40),
-    "quit": pygame.Rect(WIDTH - 120, HEIGHT - 60, 80, 40),
-}
+        # Load word dictionary
+        self.word_dict = {
+            length: self._read_words_from_file(length)
+            for length in range(6, 11)
+        }
 
-# Fonts
-font = pygame.font.SysFont("comicsans", 45)
-WORD = pygame.font.SysFont("comicsans", 40)
-TITLE = pygame.font.SysFont("comicsans", 70)
-FOOTER = pygame.font.SysFont("comicsans", 30)
-SOLVER_HINT_FONT = pygame.font.SysFont("comicsans", 30)
+    def _init_fonts(self):
+        """Initialize all font objects used in the game."""
+        self.fonts = {
+            'regular': pygame.font.SysFont("comicsans", 45),
+            'word': pygame.font.SysFont("comicsans", 40),
+            'title': pygame.font.SysFont("comicsans", 70),
+            'footer': pygame.font.SysFont("comicsans", 30),
+            'hint': pygame.font.SysFont("comicsans", 30)
+        }
 
-# Time to load images so we can draw a hangman
-images = []
-for i in range(0, 7):
-    image = pygame.image.load(f"pictures/Hangman-{i}.png")
-    images.append(image)
+    def _load_images(self):
+        """Load hangman state images."""
+        self.images = [
+            pygame.image.load(f"pictures/Hangman-{i}.png")
+            for i in range(7)
+        ]
 
-# Function to read words from dictionary files
-def read_words_from_file(length) -> list :
-    try:
-        with open(f"data/dico_{length}_lettres.txt", "r") as file:
-            return file.read().splitlines()
-    except FileNotFoundError:
-        print(f"Le dictionnaire de taille {length} n'a pas été trouvé. Il doit s'appeler dico_{length}_lettres.txt.")
-        return []
+    def _create_letter_buttons(self):
+        """Create clickable letter buttons for the game."""
+        self.letters = []
+        x_start = round((self.WIDTH - (self.BUTTON_RADIUS * 2 + self.BUTTON_SPACE) * 13) / 2)
+        y_start = 540
 
-# Game variables
-hangman = 0
-word_length = random.choice([6, 7, 8, 9, 10])
-word_dict : dict[int:list[str]] = {
-    length: read_words_from_file(length) for length in range(6, 11)
-}
-words = random.choice(word_dict[word_length])
-guessed = []
-correct_guess: list[tuple[str, int]] = []
-wrong_guess = []
+        for i in range(26):
+            x = x_start + self.BUTTON_SPACE * 2 + ((self.BUTTON_RADIUS * 2 + self.BUTTON_SPACE) * (i % 13))
+            y = y_start + ((i // 13) * (self.BUTTON_SPACE + self.BUTTON_RADIUS * 2))
+            self.letters.append([x, y, chr(65 + i), True])  # x, y, letter, visible
 
-best_letter_message = generate_best_letters(word_dict[word_length], [letter[2] for letter in letters], correct_guess,
-                                        wrong_guess)
+    def _create_footer_buttons(self):
+        """Create footer buttons for game control."""
+        self.footer_buttons = {
+            "new_game": pygame.Rect(self.WIDTH - 250, self.HEIGHT - 60, 120, 40),
+            "quit": pygame.Rect(self.WIDTH - 120, self.HEIGHT - 60, 80, 40)
+        }
 
-solver_hint = (
-    f"Il y a {len(word_dict[word_length])} possibilités. "
-    +best_letter_message
-)
+    def _read_words_from_file(self, length):
+        """Read words of specified length from dictionary file."""
+        try:
+            with open(f"data/dico_{length}_lettres.txt", "r") as file:
+                return file.read().splitlines()
+        except FileNotFoundError:
+            print(f"Dictionary for {length} letters not found.")
+            return []
 
-# Function to draw the game board
-def draw():
-    win.fill((255, 255, 255))  # display with white color
+    def _init_game_state(self):
+        """Initialize or reset the game state."""
+        self.hangman = 0
+        self.word_dict = {length: self._read_words_from_file(length=length) for length in range(6, 11)}
+        self.word_length = random.choice([6, 7, 8, 9, 10])
+        self.secret_word = random.choice(self.word_dict[self.word_length])
+        self.guessed = []
+        self.correct_guess = []
+        self.wrong_guess = []
+        # Reset letter buttons
+        for letter in self.letters:
+            letter[3] = True
+        self._update_solver_hint()
 
-    # TITLE for the game
-    title = TITLE.render("HangMan", 1, (0, 0, 0, 0))
-    win.blit(title, (WIDTH / 1.9 - title.get_width() / 2, 10))  # Title in center and then y axis= 24
+    def _handle_letter_click(self, x, y, letter):
+        """
+        Handle clicking on a letter button.
 
-    # Draw word on the screen
-    disp_word = ""
-    for letter in words:
-        if letter in guessed:
-            disp_word += letter + " "
+        Args:
+            x (int): Mouse x position
+            y (int): Mouse y position
+            letter (list): Letter button [x, y, letter, visible]
+
+        Returns:
+            bool: True if letter was clicked, False otherwise
+        """
+        button_x, button_y, ltr, visible = letter
+        if not visible:
+            return False
+
+        # Check if click is within button radius
+        dist = math.sqrt((button_x - x) ** 2 + (button_y - y) ** 2)
+        if dist <= self.BUTTON_RADIUS:
+            letter[3] = False  # Hide the button
+            self.guessed.append(ltr)
+
+            if ltr in self.secret_word:
+                # Add correct guess with positions
+                positions = [pos for pos, char in enumerate(self.secret_word) if char == ltr]
+                for pos in positions:
+                    self.correct_guess.append((ltr, pos))
+            else:
+                self.wrong_guess.append(ltr)
+                self.hangman += 1
+
+            self._update_solver_hint()
+            return True
+        return False
+
+    def _check_game_state(self):
+        """
+        Check if the game is won or lost and handle the game state accordingly.
+        """
+        # Check for win condition
+        won = all(letter in self.guessed for letter in self.secret_word)
+
+        if won:
+            self._show_game_end_screen("C'est gagné!", (129, 255, 0))
+            pygame.time.delay(2000)
+            self._init_game_state()
+            return
+
+        # Check for loss condition
+        if self.hangman >= self.MAX_TRIES:
+            self._show_game_end_screen(
+                f"C'est perdu! Le mot était {self.secret_word}",
+                (255, 0, 0)
+            )
+            pygame.time.delay(2000)
+            self._init_game_state()
+
+    def _show_game_end_screen(self, message, color):
+        """
+        Display the game end screen with the given message and color.
+
+        Args:
+            message (str): Message to display
+            color (tuple): RGB color tuple for the message
+        """
+        self.win.fill((255, 255, 255))
+        text = self.fonts['word'].render(message, 1, color)
+        text_rect = text.get_rect(center=(self.WIDTH / 2, self.HEIGHT / 2))
+        self.win.blit(text, text_rect)
+        pygame.display.update()
+
+    def _update_solver_hint(self):
+        """Update the solver hint based on current game state."""
+        if self.correct_guess or self.wrong_guess:
+            valid_words = generate_valid_words(
+                self.word_dict[self.word_length],
+                self.correct_guess,
+                self.wrong_guess
+            )
+            possible_letters = [ltr for _, _, ltr, visible in self.letters if visible]
+            best_letter_message = generate_best_letters(
+                valid_words,
+                possible_letters,
+                self.correct_guess,
+                self.wrong_guess
+            )
+            self.solver_hint = f"Il y a {len(valid_words)} possibilités. {best_letter_message}"
         else:
-            disp_word += "_ "
+            self.solver_hint = f"La lettre E."
 
-    text = WORD.render(disp_word, 1, (0, 0, 0, 0))
-    win.blit(text, (500, 250))
+    def draw(self):
+        """Draw the game state to the screen."""
+        # Clear screen
+        self.win.fill((255, 255, 255))
 
-    # Display Solver's Hint Rectangle
-    hint_rect = pygame.Rect(300, 400, 600, 100)
-    pygame.draw.rect(win, (200, 200, 200), hint_rect)
-    hint_text = SOLVER_HINT_FONT.render(solver_hint, 1, (0, 0, 0))
-    win.blit(hint_text, (hint_rect.x + 10, hint_rect.y + 10))
+        # Draw title
+        title = self.fonts['title'].render("Jeu du Pendu", 1, (0, 0, 0))
+        self.win.blit(title, (self.WIDTH / 1.9 - title.get_width() / 2, 10))
 
-    # Buttons at center
-    for btn_pos in letters:
-        x, y, ltr, visible = btn_pos  # making button visible and invisible after clicking it
+        # Draw word
+        displayed_word = " ".join(letter if letter in self.guessed else "_" for letter in self.secret_word)
+        text = self.fonts['word'].render(displayed_word, 1, (0, 0, 0))
+        self.win.blit(text, (500, 250))
 
-        if visible:
-            pygame.draw.circle(win, (0, 0, 0, 0), (x, y), radius, 4)
-            txt = font.render(ltr, 1, (0, 0, 0, 0))
-            win.blit(txt, (x - txt.get_width() / 2, y - txt.get_height() / 2))
+        # Draw solver hint
+        hint_rect = pygame.Rect(300, 400, 600, 100)
+        pygame.draw.rect(self.win, (200, 200, 200), hint_rect)
+        hint_text = self.fonts['hint'].render(self.solver_hint, 1, (0, 0, 0))
+        self.win.blit(hint_text, (hint_rect.x + 10, hint_rect.y + 10))
 
-    # Footer buttons
-    pygame.draw.rect(win, (200, 200, 200), footer_buttons["new_game"])
-    new_game_text = FOOTER.render("New Game", 1, (0, 0, 0))
-    win.blit(new_game_text, (footer_buttons["new_game"].x + 10, footer_buttons["new_game"].y + 5))
+        # Draw letter buttons
+        for btn_pos in self.letters:
+            x, y, ltr, visible = btn_pos
+            if visible:
+                pygame.draw.circle(self.win, (0, 0, 0), (x, y), self.BUTTON_RADIUS, 3)
+                text = self.fonts['regular'].render(ltr, 1, (0, 0, 0))
+                self.win.blit(text, (x - text.get_width() / 2, y - text.get_height() / 2))
 
-    pygame.draw.rect(win, (200, 200, 200), footer_buttons["quit"])
-    quit_text = FOOTER.render("Quit", 1, (0, 0, 0))
-    win.blit(quit_text, (footer_buttons["quit"].x + 10, footer_buttons["quit"].y + 5))
+        # Draw footer buttons
+        for name, rect in self.footer_buttons.items():
+            pygame.draw.rect(self.win, (200, 200, 200), rect)
+            text = self.fonts['footer'].render(name.replace('_', ' ').title(), 1, (0, 0, 0))
+            self.win.blit(text, (rect.x + 10, rect.y + 5))
 
-    win.blit(images[hangman], (50, 50))
-    pygame.display.update()
-
-# Function to reset game
-def reset_game():
-    global guessed, hangman, words, word_length, correct_guess, wrong_guess, solver_hint
-    guessed = []
-    correct_guess, wrong_guess = [], []
-    hangman = 0
-    word_length = random.choice([6, 7, 8, 9, 10])
-    words = random.choice(word_dict[word_length])
-    solver_hint = f"Il y a {len(word_dict[word_length])} possibilités."
-    for letter in letters:
-        letter[3] = True
-
-# Main game loop
-while run:
-    clock.tick(FPS)
-    draw()
-
-    for event in pygame.event.get():  # Triggering the event
-        if event.type == pygame.QUIT:
-            run = False
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            x_mouse, y_mouse = pygame.mouse.get_pos()
-
-            # Check for footer buttons
-            if footer_buttons["new_game"].collidepoint(x_mouse, y_mouse):
-                reset_game()
-
-            if footer_buttons["quit"].collidepoint(x_mouse, y_mouse):
-                run = False
-
-            # Check letter buttons
-            for letter in letters:
-                x, y, ltr, visible = letter
-                if visible:
-                    dist = math.sqrt((x - x_mouse) ** 2 + (y - y_mouse) ** 2)
-                    if dist <= radius:
-                        letter[3] = False  # to make the clicked button invisible
-                        guessed.append(ltr)
-                        if ltr not in words:
-                            hangman += 1
-                            wrong_guess.append(ltr)
-                        else:
-                            correct_positions = [pos for pos, char in enumerate(words) if char == ltr]
-                            # Append the letter and its positions to correct_guess
-                            for pos in correct_positions:
-                                correct_guess.append((ltr, pos))
-
-                        valid_words = generate_valid_words(all_words=word_dict[word_length], letter_in=correct_guess, letter_out=wrong_guess)
-                        possible_letters = [ltr for x, y, ltr, visible in letters if visible]
-                        # Get the top letters to play next
-                        best_letter_message = generate_best_letters(valid_words, possible_letters, correct_guess,
-                                                            wrong_guess)
-
-
-                        solver_hint = (
-                                f"Il y a {len(valid_words)} possibilités. " + best_letter_message
-                            )
-
-
-
-
-    won = True
-    for letter in words:
-        if letter not in guessed:
-            won = False
-            break
-
-    if won:
-        draw()
-        pygame.time.delay(1000)
-        win.fill((0, 0, 0, 0))
-        text = WORD.render("C'est gagné!", 1, (129, 255, 0, 255))
-        win.blit(text, (WIDTH / 2 - text.get_width() / 2, HEIGHT / 2 - text.get_height() / 2))
+        # Draw hangman
+        self.win.blit(self.images[self.hangman], (50, 50))
         pygame.display.update()
-        pygame.time.delay(4000)
-        reset_game()
 
-    if hangman == 6:
-        draw()
-        pygame.time.delay(1000)
-        win.fill((0, 0, 0, 0))
-        text = WORD.render("C'est perdu", 1, (255, 0, 5, 255))
-        answer = WORD.render("Le mot était " + words, 1, (129, 255, 0, 0))
-        win.blit(text, (WIDTH / 2 - text.get_width() / 2, HEIGHT / 2 - text.get_height() / 2))
-        win.blit(answer, ((WIDTH / 2 - answer.get_width() / 2), (HEIGHT / 2 - text.get_height() / 2) + 70))
+    def handle_click(self, pos):
+        """Handle mouse click events."""
+        x, y = pos
 
-        pygame.display.update()
-        pygame.time.delay(4000)
-        print("LOST")
-        reset_game()
+        # Check footer buttons
+        if self.footer_buttons["new_game"].collidepoint(x, y):
+            self._init_game_state()
+            return True
+        if self.footer_buttons["quit"].collidepoint(x, y):
+            return False
 
-pygame.quit()
+        # Check letter buttons
+        for letter in self.letters:
+            if self._handle_letter_click(x, y, letter):
+                break
+
+        return True
+
+    def run(self):
+        """Main game loop."""
+        clock = pygame.time.Clock()
+        running = True
+
+        while running:
+            clock.tick(self.FPS)
+            self.draw()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    running = self.handle_click(pygame.mouse.get_pos())
+
+            self._check_game_state()
+
+        pygame.quit()
+
+
+if __name__ == "__main__":
+    game = HangmanGame()
+    game.run()

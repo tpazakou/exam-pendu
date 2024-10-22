@@ -17,8 +17,7 @@ def lire_filtrer_mots(chemin_lexique, longueur):
     Supprime ne prends pas les mots avec les espaces, supprime les doublons
     """
     lst_mots = []
-    with open(chemin_lexique, 'r', encoding='latin-1') as file:
-        next(file)
+    with open(chemin_lexique, 'r', encoding='utf-8') as file:
         for line in file:
             line = line.split('\t')
             mot = line[0].strip().split()[0]
@@ -32,13 +31,14 @@ def ecrire_liste_mots(liste_mots, longueur):
     with open(chemin_dico_ecriture, 'w', encoding='utf-8') as file:
         file.writelines(f"{mot}\n" for mot in liste_mots)
 
-def main():
+def main(path):
     for long in range(6,11):
         # génère la liste de mot pour la longueur donné
-        lst_mots = lire_filtrer_mots(chemin_lexique="data/liste-mots-alphabetique.txt", longueur=long)
+        lst_mots = lire_filtrer_mots(chemin_lexique=path, longueur=long)
 
         # Génère un fichier texte correspondant
         ecrire_liste_mots(lst_mots, longueur=long)
 
 if __name__ == '__main__':
-    main()
+    chemin = "data/liste_francais.txt"
+    main(path = chemin)

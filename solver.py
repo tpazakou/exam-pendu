@@ -5,9 +5,15 @@ from copy import copy
 def generate_valid_words(all_words: list, letter_in:list[tuple[str, int]], letter_out:list) -> list:
     exclude_set = set(letter_out)
     filtered_words = [word for word in all_words if all(letter not in exclude_set for letter in word)]
-
-    valid_words = [word for word in filtered_words if all(word[position] == letter for letter, position in letter_in)]
-
+    # valid_words = [word for word in filtered_words if
+    #                all(
+    #                    word[position] == letter for letter, position in letter_in
+    #                )
+    #                ]
+    valid_words = [
+        word for word in filtered_words
+        if all(0 <= position < len(word) and word[position] == letter for letter, position in letter_in)
+    ]
     return valid_words
 
 
