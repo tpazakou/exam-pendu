@@ -12,40 +12,43 @@ Data limite : Vendredi 13 décembre 2024
 
 ## Présentation
 Le projet est un jeu de pendu basique développé en python à l'aide la librairie [Pygame](https://pypi.org/project/pygame/).
-```python
+```bash
+pip install pygame 
+```
+
+Sur les machines de la salle S404 ajoutez `--user`, car vous n'avez pas les droits administrateur
+
+```bash
 pip install pygame --user # On ajoute user sur les machines de la S404
 ```
 
 Pour lancer le jeu, il suffit d’exécuter le fichier `hangman.py` à l'aide python.
 Par ex. dans le terminal:
 
-```python
+```bash
 python hangman.py
 ```
 Le jeu utilise 5 fichiers contenant des mots de taille variable (entre 6 et 10 lettres). Ces mots servent de mot mystère que l'utilisateur doit devenir. A chaque partie, une nouvelle longueur est tirée au sort puis un mot parmi le dictionnaire correspondant.  
 
 ## Examen
 L'examen est divisé en 4 parties: 
-1. Une partie du **code**  (6 points) consiste à compléter les scripts solver.py et generate_dicts.py. Le script generate_dicts.py lit un fichier texte et crée des listes de mots en fonction de leur longueur. Le script solver.py permet de conseiller l'utilisateur sur le meilleur choix de lettre à jouer.
-2. Une partie **git**   (5 points) qui consiste à montrer votre compréhension en forkant le dépôt de code, en le clonant sur votre machine, en faisant des commit puis le poussant vers votre dépôt à distance. 
+1. Une partie du **code**  (5 points) consiste à compléter les scripts solver.py et generate_dicts.py. Le script generate_dicts.py lit un fichier texte et crée des listes de mots en fonction de leur longueur. Le script solver.py permet de conseiller l'utilisateur sur le meilleur choix de lettre à jouer.
+2. Une partie **git**   (6 points) qui consiste à montrer votre compréhension en forkant le dépôt de code, en le clonant sur votre machine, en faisant des commit puis le poussant vers votre dépôt à distance. 
 3. Une partie **test ** (5 points)  montrera votre compréhension des tests avec `pytest`.
 4. Enfin, une partie **documentation** (4 points) consistera à générer la documentation des scripts python du projet.
 
-### I. Code
+## I. Code
 
 ***Toutes les fonctions doivent contenir une docstring et des type hints.***
 
-Vous devez écrire deux fonctions dans `generate_dicts.py` :
+Vous devez écrire la fonction `lire_filtrer_mots` dans `generate_dicts.py` :
 
 ```python
 def lire_filtrer_mots(chemin_lexique, longueur):
     return []
-
-def ecrire_liste_mots(liste_mots, longueur):
-    pass
 ```
 
-### I.1 Script `generate_dicts` (2 points)
+### I.1 Script `generate_dicts` (1 point)
 
 1. **Fonction `lire_filtrer_mots`** :
    - Cette fonction doit lire tous les mots d'un fichier texte (le fichier fourni dans `chemin_lexique`).
@@ -55,18 +58,14 @@ def ecrire_liste_mots(liste_mots, longueur):
      - Éliminant les doublons.
    - La fonction retourne une **liste Python** contenant uniquement les mots valides ayant la taille spécifiée.
 
-2. **Fonction `ecrire_liste_mots`** :
-   - Cette fonction prend en entrée une **liste de mots** et écrit ces mots dans un fichier texte spécifique selon la longueur des mots.
-   - Le fichier de destination doit être nommé en fonction de la longueur des mots (par exemple, `dico_6_lettres.txt` pour les mots de 6 lettres).
-   - Chaque mot doit être écrit sur une nouvelle ligne dans le fichier, séparé par un saut de ligne (`\n`).
+2. **Processus global** :
 
-#### **Processus global** :
-- Lire les mots depuis le fichier source (par exemple `data/liste_mots.txt`) et appliquer le filtre pour obtenir les mots de 6 à 10 lettres, grâce à la fonction `lire_filtrer_mots`.
-- Générer 5 fichiers textes (par exemple, `dico_6_lettres.txt`, `dico_7_lettres.txt`, etc.) en écrivant dans chacun les mots correspondants à une longueur donnée, en utilisant la fonction `ecrire_liste_mots`.
+- **Écrire la fonction `lire_filtrer_mots`**: elle lit les mots depuis le fichier source (par exemple `data/liste_mots.txt`) et applique un filtre pour retourner une liste de mots d'une longueur donnée.
+- **Exécuter le script**: pour générer les fichiers texte (par exemple, `dico_6_lettres.txt`, `dico_7_lettres.txt`, etc.), il suffit d'exécuter le script `generate_dicts.py` une fois que la fonction `lire_filtrer_mots` est écrite, car les deux autres fonctions ont déjà été écrites.
 
 ---
 
-**Note** : Les fichiers `dico_6_lettres.txt` à `dico_10_lettres.txt` présents dans le dossier `data/` contiennent actuellement seulement 10 mots pour que le programme puisse fonctionner. Vous devez recréer ces fichiers à partir de la liste complète des mots fournie dans `data/liste_mots.txt`.
+**Note** : Les fichiers `dico_6_lettres.txt` à `dico_10_lettres.txt` présents initialement dans le dossier `data/` contiennent seulement 10 mots pour que le programme puisse fonctionner. Vous devez recréer ces fichiers à partir de la liste complète des mots fournie dans `data/liste_mots.txt`.
 
 ### I.2 Script `solver.py` (4 points)
 
@@ -98,11 +97,11 @@ En fonction des lettres déjà jouées, cette fonction permet d'obtenir la liste
 
 L'idée est de parcourir la liste des mots possibles et de retirer ceux qui :
 - Contiennent une lettre exclue.
-- Ne respectent pas les positions des lettres déjà trouvées par l'utilisateur. si `letters_in_secret = [(A, 0), (B, 2)]`,  on exclut les mots qui ne commencent pas par un A <u>ou</u> qui n'ont pas un B en troisième position.
+- Ne respectent pas les positions des lettres déjà trouvées par l'utilisateur. si `letters_in_secret = [(A, 0), (B, 2)]`,  on exclut les mots qui ne commencent pas par un A <u>et</u> les mots qui n'ont pas un B en troisième position.
 
 #### Fonction `generate_best_letters` (2 points)
 
-Cette fonction suggère à l'utilisateur quelle lettre jouer ensuite, en se basant sur la liste des mots valides générée par `generate_valid_words`. Elle prend les paramètres suivants :
+Cette fonction suggère à l'utilisateur quelle lettre jouer ensuite, en se basant sur la liste des mots valides générée par `generate_valid_words`. Elle prend les paramètres suivants (vous n'êtes pas obligés de tous les utiliser) :
 - `possible_words` : La liste des mots encore en jeu après application des règles de `generate_valid_words`.
 - `letters_not_played` : Une liste de lettres que l'utilisateur n'a pas encore essayées.
 - `letters_in_secret` : La liste des lettres correctement placées dans le mot, avec leurs positions.
@@ -112,14 +111,12 @@ Cette fonction retourne une suggestion sous forme de chaîne de caractères, qui
 
 #### Stratégie pour la fonction `generate_best_letters`
 
-Vous êtes libres d'écrire cette fonction selon votre préférence. Pensez à écrire une docstring et type hint qui correspondent à ce que fais la fonction. Voici 3 suggestions.
+Vous êtes libres d'écrire cette fonction selon votre préférence. Pensez à écrire une docstring et des type hint qui correspondent à ce que fais la fonction. Voici 3 suggestions.
 
-#### 1. **Niveau facile : Choisir une lettre au hasard** (0.5 point max)
-   - **Principe** : On choisit une lettre de manière aléatoire parmi celles qui n'ont pas encore été jouées.
+#### 1. **Niveau facile : Choisir la lettre jouable la plus fréquente de la langue française**  (1 / 2 points)
+   - **Principe** : On récupérer la fréquence des lettres dans la langue française (par exemple [ici](https://www.apprendre-en-ligne.net/crypto/stat/francais.html). On choisit la lettre la plus fréquente parmi celles qui n'ont pas encore été jouées.
 
-     
-
-#### 2. **Niveau moyen : Utiliser la fréquence moyenne par mot** (2 points)
+#### 2. **Niveau moyen : Utiliser la fréquence moyenne par mot** (2 / 2 points)
    - **Principe** : On calcule la fréquence moyenne de chaque lettre par mot. La lettre avec la fréquence moyenne la plus élevée est celle qui a le plus de chances d'être dans le mot mystère.
    
    - **Pseudo-code** :
@@ -134,11 +131,11 @@ Vous êtes libres d'écrire cette fonction selon votre préférence. Pensez à �
      $$
      
 
-### 3. **Niveau difficile : Calculer l'impact de chaque lettre** (2 points + 1 bonus)
+#### 3. **Niveau difficile : Calculer l'impact de chaque lettre** (3 / 2 points)
 
 Dans cette stratégie, l'objectif est de déterminer quelle lettre élimine le plus de mots possibles parmi les mots restants. Pour cela, on simule le fait de jouer chaque lettre et on mesure combien de mots sont encore possibles après avoir joué cette lettre. La lettre qui, en moyenne, réduit le plus les possibilités est celle que l'on conseille à l'utilisateur.
 
-#### Explication de la méthode :
+##### 1. Explication de la méthode :
 
 1. **Pour chaque lettre jouable :**
    - On simule cette lettre comme si elle était jouée, en supposant que chaque mot dans la liste des mots restants (`possible_words`) pourrait être le mot secret.
@@ -149,7 +146,7 @@ Dans cette stratégie, l'objectif est de déterminer quelle lettre élimine le p
 3. **Calculer la moyenne** :
    - Pour chaque lettre, on fait la moyenne du nombre de mots restants après simulation, en parcourant tous les mots possibles. Plus cette moyenne est basse, plus la lettre a un fort impact, car elle élimine beaucoup de possibilités.
 
-#### Pseudo-code détaillé :
+##### 2. Pseudo-code détaillé :
 
 1. **Initialisation** :
    - Liste des lettres non encore jouées.
@@ -170,7 +167,7 @@ Dans cette stratégie, l'objectif est de déterminer quelle lettre élimine le p
 3. **Choisir la lettre** :
    - La lettre ayant la plus faible moyenne est celle qui élimine le plus de mots. On conseille donc cette lettre à l'utilisateur.
 
-### II. Git
+## II. Git
 
 Dans cette partie, vous allez montrer votre maîtrise de Git en réalisant les étapes suivantes :
 
@@ -199,16 +196,16 @@ Dans cette partie, vous allez montrer votre maîtrise de Git en réalisant les �
    - Faites une modification dans le code, commit cette modification
    - Poussez cette branche de développement sur GitHub.
    
-### III. Tests avec Pytest
+## III. Tests avec Pytest
 
-Dans cette section, vous allez écrire des tests unitaires pour tester  les fonctions `lire_filtrer_mots` de `generate_dicts.py` et `generate_valid_words`de `solver.py`.
+Dans cette section, vous allez écrire des tests unitaires pour tester  les fonctions `lire_filtrer_mots` de `generate_dicts.py` et `generate_valid_words`   de `solver.py`.
 
 Pour ce faire, vous utiliserez **pytest** et placerez vos tests dans un dossier dédié nommé `tests/`. Vous pouvez créez un fichier test_nom_fonction.py par fonction. Chaque fonction doit être testée avec au moins trois cas différents.
 
 Pensez à installer pytest:
 
 ```python
-pip install pytest --user # (user nécessaire si salle S404)
+pip install pytest
 ```
 
 Pensez à importer pytest dans vos fichiers de test. 
@@ -235,18 +232,23 @@ def test_generate_valid_words_start_d():
         letters_not_in_secret=[]
     ) == ["DEVANT"]
 ```
-
-
-
 **Exemples de tests**:
 
 -  Vérifier que la fonction retourne une liste vide si `possible_words` est vide.
 - Vérifier que, lorsque l'utilisateur n'a joué aucune lettre, la liste des mots possibles reste inchangée.
 - Créer un test qui utilise des lettres exclues et des lettres présentes.
 
+*Quand les tests sont écrits, pensez à pousser le dossier de test vers GitHub:*
+
+``````git
+git add tests/
+git commit -m "ajout des tests"
+git push 
+``````
 
 
-### IV. documentation avec Sphinx
+
+## IV. documentation avec Sphinx
 
 #### 1. **Lien vers le processus complet**
 
@@ -264,16 +266,10 @@ Votre objectif est de générer la documentation uniquement pour les scripts sui
 
 #### 3. **Conseils spécifiques **
 
-1. **Génération des fichiers `.rst`** :
-   - Exécutez la commande suivante pour générer les fichiers `.rst` uniquement pour les scripts indiqués ci-dessus :
-     ```bash
-     sphinx-apidoc -o docs/source/ ./generate_dicts.py ./solver.py ./hangman.py
-     ```
-     Cela générera des fichiers `.rst` pour chacun de ces scripts dans le dossier `docs/source`.
+1. **Édition spécifique pour le fichier `hangman.rst`** :
 
-2. **Édition spécifique pour le fichier `hangman.rst`** :
    - Comme le fichier `hangman.py` contient une classe, il est nécessaire de modifier manuellement le fichier `.rst` associé afin de correctement documenter la classe `HangmanGame`.
-   - Ouvrez le fichier `hangman.rst` et ajoutez la section suivante pour détailler la classe `HangmanGame` :
+   - Ouvrez le fichier `hangman.rst` qui se trouvent dans source/ et ajoutez la section suivante pour détailler la classe `HangmanGame` :
 
      ```rst
      Jeu du Pendu
@@ -289,7 +285,7 @@ Votre objectif est de générer la documentation uniquement pour les scripts sui
 
      Cette section permet de générer la documentation de la classe ainsi que toutes ses méthodes et attributs.
 
-3. **Dépendances** :
+2. **Dépendances** :
 
    - Pour que la documentation soit correctement générée, assurez-vous que toutes les dépendances du projet sont installées, notamment **pygame**, en utilisant :
      ```bash
@@ -300,10 +296,14 @@ Votre objectif est de générer la documentation uniquement pour les scripts sui
      # import pygame
      ```
 
-4. **Suppression des mentions des tests dans les fichier rst**
+3. **Suppression des mentions des tests dans les fichier rst**
 
    S'il existe, supprimez les fichiers suivants.
 
    - Supprimer tests dans modules.rst
+
    - Supprimer le fichier tests.rst
 
+     
+
+4.  **Pensez à ajouter, commit et pousser le dossier doc quand la documentation est terminée.**

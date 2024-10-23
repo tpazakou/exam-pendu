@@ -9,17 +9,22 @@ dico_10_lettres.txt
 On enlève les accents, les espaces, les tirets et les mots en double.
 """
 
-
-
 def lire_filtrer_mots(chemin_lexique, longueur):
     return []
 
 
-def ecrire_liste_mots(liste_mots, longueur):
-    pass
+def ecrire_liste_mots(liste_mots:list, longueur:int) -> None:
+    """Génère un fichier texte contenant tous les mots pour une longueur donné"""
+
+    chemin_dico_ecriture:str = f"data/dico_{longueur}_lettres.txt"
+
+    with open(chemin_dico_ecriture, 'w', encoding='utf-8') as file:
+        file.writelines(f"{mot}\n" for mot in liste_mots)
 
 
-def main(chemin):
+
+
+def main(chemin:str) -> None:
     for long in range(6,11):
         # génère la liste de mot pour la longueur donné
         lst_mots = lire_filtrer_mots(chemin_lexique=chemin, longueur=long)
