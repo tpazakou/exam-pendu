@@ -1,0 +1,7 @@
+**pycache**
+.env
+.idea/
+tests/__pycache__/
+*.pyc
+*.xml
+*.iml
