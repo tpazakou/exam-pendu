@@ -32,10 +32,10 @@ Le jeu utilise 5 fichiers contenant des mots de taille variable (entre 6 et 10 l
 
 ## Examen
 L'examen est divisé en 4 parties: 
-1. Une partie du **code**  (6 points) consiste à compléter les scripts solver.py et generate_dicts.py. Le script generate_dicts.py lit un fichier texte et crée des listes de mots en fonction de leur longueur. Le script solver.py permet de conseiller l'utilisateur sur le meilleur choix de lettre à jouer.
+1. Une partie du **code**  (5 points) consiste à compléter les scripts solver.py et generate_dicts.py. Le script generate_dicts.py lit un fichier texte et crée des listes de mots en fonction de leur longueur. Le script solver.py permet de conseiller l'utilisateur sur le meilleur choix de lettre à jouer.
 2. Une partie **git**   (5 points) qui consiste à montrer votre compréhension en forkant le dépôt de code, en le clonant sur votre machine, en faisant des commit puis le poussant vers votre dépôt à distance. 
 3. Une partie **test** (5 points)  montrera votre compréhension des tests avec `pytest`.
-4. Enfin, une partie **documentation** (4 points) consistera à générer la documentation des scripts python du projet.
+4. Enfin, une partie **documentation** (5 points) consistera à générer la documentation des scripts python du projet.
 
 ## I. Code
 
@@ -56,7 +56,7 @@ def lire_filtrer_mots(chemin_lexique, longueur):
    - Les mots doivent être nettoyés en :
      - **Supprimant les accents**, les espaces, et les tirets.
      - Éliminant les doublons.
-   - La fonction retourne une **liste Python** contenant uniquement les mots valides ayant la taille spécifiée.
+   - La fonction retourne une **liste Python** contenant uniquement les mots valides en majuscule ayant la taille spécifiée.
 
 2. **Processus global** :
 
@@ -87,9 +87,11 @@ En fonction des lettres déjà jouées, cette fonction permet d'obtenir la liste
 
 - **Entrées** :
   - `possible_words` : La liste des mots potentiellement valides (par exemple, au départ, tous les mots d'une longueur donnée).
-  - `letters_in_secret` : Une liste de tuples représentant les lettres déjà trouvées par l'utilisateur ainsi que leur position dans le mot. Par exemple, `[(A, 0), (B, 2)]` signifie que la lettre "A" est à la première position du mot, et la lettre "B" est à la troisième position.
-  - `letters_not_in_secret` : Une liste des lettres déjà essayées par l'utilisateur mais qui ne sont pas dans le mot.
-
+  - `letters_in_secret` : Une liste de tuples représentant les lettres déjà trouvées par l'utilisateur ainsi que leur position dans le mot. 
+    - Par ex., si l'utilisateur a joué un B et A que le mot commence par BA `letters_in_secret = [(B,0), (A,1)]`
+  - `letters_not_in_secret` : Une liste des lettres déjà essayées par l'utilisateur mais qui ne sont pas dans le mot. 
+    - Par exemple, si il n'y a pas de C de D et de F: `letters_not_in_secret` = ['C', 'D', 'F']
+  
 - **But** :
   Cette fonction doit retourner une liste de mots qui respectent les contraintes suivantes :
   1. **Lettres exclues** : Les mots contenant une lettre présente dans `letters_not_in_secret` doivent être exclus.
@@ -104,8 +106,8 @@ L'idée est de parcourir la liste des mots possibles et de retirer ceux qui :
 Cette fonction suggère à l'utilisateur quelle lettre jouer ensuite, en se basant sur la liste des mots valides générée par `generate_valid_words`. Elle prend les paramètres suivants (vous n'êtes pas obligés de tous les utiliser) :
 - `possible_words` : La liste des mots encore en jeu après application des règles de `generate_valid_words`.
 - `letters_not_played` : Une liste de lettres que l'utilisateur n'a pas encore essayées.
-- `letters_in_secret` : La liste des lettres correctement placées dans le mot, avec leurs positions.
-- `letters_not_in_secret` : La liste des lettres qui ne sont pas dans le mot.
+- `letters_in_secret` : La liste des lettres correctement placées dans le mot, avec leurs positions. 
+- `letters_not_in_secret` : La liste des lettres qui ne sont pas dans le mot. 
 
 Cette fonction retourne une suggestion sous forme de chaîne de caractères, qui est directement affichée dans le jeu pour guider l'utilisateur vers la meilleure lettre à jouer.
 
@@ -131,7 +133,7 @@ Vous êtes libres d'écrire cette fonction selon votre préférence. Pensez à �
      $$
      
 
-#### 3. **Niveau difficile : Calculer l'impact de chaque lettre** (3 / 2 points)
+#### 3. **Niveau difficile : Calculer l'impact de chaque lettre** (2 + 1 bonus / 2 points)
 
 Dans cette stratégie, l'objectif est de déterminer quelle lettre élimine le plus de mots possibles parmi les mots restants. Pour cela, on simule le fait de jouer chaque lettre et on mesure combien de mots sont encore possibles après avoir joué cette lettre. La lettre qui, en moyenne, réduit le plus les possibilités est celle que l'on conseille à l'utilisateur.
 
@@ -250,6 +252,10 @@ git push
 
 ## IV. documentation avec Sphinx
 
+![apercu_documentation](pictures/apercu_documentation.png)
+
+*Aperçu de l'index de la documentation, soit le fichier `index.html`*
+
 #### 1. **Lien vers le processus complet**
 
 Pour suivre toutes les étapes détaillées de la création de documentation avec Sphinx, référez-vous au guide suivant :  
@@ -266,9 +272,13 @@ Votre objectif est de générer la documentation uniquement pour les scripts sui
 
 #### 3. **Conseils spécifiques **
 
-1. **Édition spécifique pour le fichier `hangman.rst`** :
+1. **Edition de`index.rst `**:
+
+   - Pensez à ajouter les trois scripts qui seront documentés (generate_dicts, hangman et solver)
+   - Vous pouvez éditer la section qui commence par "Add your content ..." en écrivant une ligne qui décrit le projet.
 
 2. **Édition spécifique pour le fichier `hangman.rst`** :
+
    - Comme le fichier `hangman.py` contient une classe, il est nécessaire de modifier manuellement le fichier `.rst` associé afin de correctement documenter la classe `HangmanGame`.
    - Ouvrez le fichier `hangman.rst` qui se trouvent dans source/ et ajoutez la section suivante pour détailler la classe `HangmanGame` :
 
@@ -286,18 +296,15 @@ Votre objectif est de générer la documentation uniquement pour les scripts sui
 
      Cette section permet de générer la documentation de la classe ainsi que toutes ses méthodes et attributs.
 
-2. **Dépendances** :
+3. **Dépendances** :
 
-   - Pour que la documentation soit correctement générée, assurez-vous que toutes les dépendances du projet sont installées, notamment **pygame**, en utilisant :
-     ```bash
-     pip install pygame --user
-     ```
+   - Pour que la documentation soit correctement générée, assurez-vous que toutes les dépendances du projet sont installées, notamment **pygame**, 
    - Si vous rencontrez des problèmes liés à l'installation de `pygame`, vous pouvez temporairement commenter l'import dans `hangman.py` :
      ```python
      # import pygame
      ```
 
-3. **Suppression des mentions des tests dans les fichier rst**
+4. **Suppression des mentions des tests dans les fichier rst**
 
    S'il existe, supprimez les fichiers suivants.
 
@@ -307,4 +314,5 @@ Votre objectif est de générer la documentation uniquement pour les scripts sui
 
      
 
-4.  **Pensez à ajouter, commit et pousser le dossier doc quand la documentation est terminée.**
+5. **Pensez à ajouter, commit et pousser le dossier doc quand la documentation est terminée.**
+
