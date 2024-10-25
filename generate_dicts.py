@@ -1,3 +1,5 @@
+from unidecode import unidecode
+
 """
 Depuis le fichier liste_mots.txt, on récupère tous les mots de 6,7,8,9,10 lettres.
 et on génère 5 fichiers textes contenant les mots en fonction de leur taille (un mot par ligne, séparé par un \n):
@@ -9,8 +11,16 @@ dico_10_lettres.txt
 On enlève les accents, les espaces, les tirets et les mots en double.
 """
 
+
 def lire_filtrer_mots(chemin_lexique, longueur):
-    return []
+    """ Doc"""
+    with open(chemin_lexique, 'r', encoding='utf8') as f:
+        liste_mots = set()
+        for line in f.readlines():
+            mot = line.split(" ")[0]
+            if len(mot) == longueur and "'" not in mot and "-" not in mot:
+                liste_mots.add(unidecode(mot.upper()))
+    return list(liste_mots)
 
 
 def ecrire_liste_mots(liste_mots:list, longueur:int) -> None:

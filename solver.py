@@ -3,7 +3,9 @@ from copy import copy
 
 
 def generate_valid_words(possible_words, letters_in_secret, letters_not_in_secret):
-    return []
+    """ Doc """
+    valid_words = []
+    return valid_words
 
 
 
