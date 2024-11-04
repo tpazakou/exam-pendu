@@ -5,14 +5,13 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
 import os
 import sys
-## Le chemin depuis conf.py vers les fichiers .py que l'on veut documenter.
+
 sys.path.insert(0, os.path.abspath('../../'))
 
 
-project = 'examen'
+project = 'Pendu (examen final)'
 copyright = '2024, Theodora'
 author = 'Theodora'
 release = '1'
@@ -33,10 +32,11 @@ exclude_patterns = []
 
 language = 'fr'
 
+napoleon_google_docstring = True
+add_module_names = False
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
-napoleon_google_docstring = True
-add_module_names = False

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hangman &mdash; Documentation examen 1</title>
+  <title>hangman &mdash; Documentation Pendu (examen final) 1</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -30,7 +30,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            examen
+            Pendu (examen final)
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -53,7 +53,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">examen</a>
+          <a href="../index.html">Pendu (examen final)</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -85,8 +85,6 @@
 <span class="sd">    A class representing the Hangman game with a graphical interface and solver hints.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="HangmanGame.__init__">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Initialize Pygame and window settings</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
@@ -111,11 +109,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">word_dict</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">length</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_words_from_file</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
-        <span class="p">}</span></div>
+        <span class="p">}</span>
 
-
-<div class="viewcode-block" id="HangmanGame._init_fonts">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._init_fonts">[docs]</a>
     <span class="k">def</span> <span class="nf">_init_fonts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize all font objects used in the game.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fonts</span> <span class="o">=</span> <span class="p">{</span>
@@ -124,21 +119,15 @@
             <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;comicsans&quot;</span><span class="p">,</span> <span class="mi">70</span><span class="p">),</span>
             <span class="s1">&#39;footer&#39;</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;comicsans&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
             <span class="s1">&#39;hint&#39;</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;comicsans&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
-        <span class="p">}</span></div>
+        <span class="p">}</span>
 
-
-<div class="viewcode-block" id="HangmanGame._load_images">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._load_images">[docs]</a>
     <span class="k">def</span> <span class="nf">_load_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load hangman state images.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pictures/Hangman-</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
-        <span class="p">]</span></div>
+        <span class="p">]</span>
 
-
-<div class="viewcode-block" id="HangmanGame._create_letter_buttons">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._create_letter_buttons">[docs]</a>
     <span class="k">def</span> <span class="nf">_create_letter_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create clickable letter buttons for the game.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">letters</span> <span class="o">=</span> <span class="p">[]</span>
@@ -148,21 +137,15 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">26</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">x_start</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_SPACE</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_RADIUS</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_SPACE</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">13</span><span class="p">))</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">y_start</span> <span class="o">+</span> <span class="p">((</span><span class="n">i</span> <span class="o">//</span> <span class="mi">13</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_SPACE</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">BUTTON_RADIUS</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">letters</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="n">i</span><span class="p">),</span> <span class="kc">True</span><span class="p">])</span>  <span class="c1"># x, y, letter, visible</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">letters</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="n">i</span><span class="p">),</span> <span class="kc">True</span><span class="p">])</span>  <span class="c1"># x, y, letter, visible</span>
 
-
-<div class="viewcode-block" id="HangmanGame._create_footer_buttons">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._create_footer_buttons">[docs]</a>
     <span class="k">def</span> <span class="nf">_create_footer_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create footer buttons for game control.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">footer_buttons</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;Nouvelle Partie&quot;</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WIDTH</span> <span class="o">-</span> <span class="mi">400</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">HEIGHT</span> <span class="o">-</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
             <span class="s2">&quot;Quitter&quot;</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WIDTH</span> <span class="o">-</span> <span class="mi">140</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">HEIGHT</span> <span class="o">-</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
-        <span class="p">}</span></div>
+        <span class="p">}</span>
 
-
-<div class="viewcode-block" id="HangmanGame._read_words_from_file">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._read_words_from_file">[docs]</a>
     <span class="k">def</span> <span class="nf">_read_words_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read words of specified length from dictionary file.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -170,11 +153,8 @@
                 <span class="k">return</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dictionary for </span><span class="si">{</span><span class="n">length</span><span class="si">}</span><span class="s2"> letters not found.&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">[]</span></div>
+            <span class="k">return</span> <span class="p">[]</span>
 
-
-<div class="viewcode-block" id="HangmanGame._init_game_state">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._init_game_state">[docs]</a>
     <span class="k">def</span> <span class="nf">_init_game_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize or reset the game state.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hangman</span> <span class="o">=</span> <span class="mi">0</span>
@@ -187,11 +167,8 @@
         <span class="c1"># Reset letter buttons</span>
         <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">letters</span><span class="p">:</span>
             <span class="n">letter</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_solver_hint</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_solver_hint</span><span class="p">()</span>
 
-
-<div class="viewcode-block" id="HangmanGame._handle_letter_click">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._handle_letter_click">[docs]</a>
     <span class="k">def</span> <span class="nf">_handle_letter_click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">letter</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle clicking on a letter button.</span>
@@ -225,11 +202,8 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_update_solver_hint</span><span class="p">()</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="kc">False</span>
 
-
-<div class="viewcode-block" id="HangmanGame._check_game_state">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._check_game_state">[docs]</a>
     <span class="k">def</span> <span class="nf">_check_game_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check if the game is won or lost and handle the game state accordingly.</span>
@@ -250,11 +224,8 @@
                 <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_init_game_state</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_game_state</span><span class="p">()</span>
 
-
-<div class="viewcode-block" id="HangmanGame._show_game_end_screen">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._show_game_end_screen">[docs]</a>
     <span class="k">def</span> <span class="nf">_show_game_end_screen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Display the game end screen with the given message and color.</span>
@@ -267,11 +238,8 @@
         <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fonts</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
         <span class="n">text_rect</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">get_rect</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WIDTH</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">HEIGHT</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">text_rect</span><span class="p">)</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-
-<div class="viewcode-block" id="HangmanGame._update_solver_hint">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame._update_solver_hint">[docs]</a>
     <span class="k">def</span> <span class="nf">_update_solver_hint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the solver hint based on current game state.&quot;&quot;&quot;</span>
         <span class="n">valid_words</span> <span class="o">=</span> <span class="n">generate_valid_words</span><span class="p">(</span>
@@ -286,11 +254,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">correct_guess</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wrong_guess</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">solver_hint</span> <span class="o">=</span> <span class="n">best_letter_message</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver_hint</span> <span class="o">=</span> <span class="n">best_letter_message</span>
 
-
-<div class="viewcode-block" id="HangmanGame.draw">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame.draw">[docs]</a>
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Draw the game state to the screen.&quot;&quot;&quot;</span>
         <span class="c1"># Clear screen</span>
@@ -327,11 +292,8 @@
 
         <span class="c1"># Draw hangman</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">hangman</span><span class="p">],</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-
-<div class="viewcode-block" id="HangmanGame.handle_click">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame.handle_click">[docs]</a>
     <span class="k">def</span> <span class="nf">handle_click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle mouse click events.&quot;&quot;&quot;</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pos</span>
@@ -348,11 +310,8 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_letter_click</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">letter</span><span class="p">):</span>
                 <span class="k">break</span>
 
-        <span class="k">return</span> <span class="kc">True</span></div>
+        <span class="k">return</span> <span class="kc">True</span>
 
-
-<div class="viewcode-block" id="HangmanGame.run">
-<a class="viewcode-back" href="../hangman.html#hangman.HangmanGame.run">[docs]</a>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Main game loop.&quot;&quot;&quot;</span>
         <span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
@@ -371,7 +330,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_check_game_state</span><span class="p">()</span>
 
         <span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
-</div>
 
 
 

@@ -14,7 +14,7 @@ On enlève les accents, les espaces, les tirets et les mots en double.
 
 def lire_filtrer_mots(chemin_lexique: str, longueur: int) -> list[str]:
     """
-    Lit le fichier de lexique trouvé dans le chemin indiqué et retourne une liste de mots d'une longueur spécifiée,
+    Lit le fichier du lexique trouvé dans le chemin indiqué et retourne une liste de mots de la longueur donnée,
     en majuscules, sans accents, apostrophes et tirets.
 
     Args:

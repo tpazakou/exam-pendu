@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>solver module &mdash; Documentation examen 1</title>
+  <title>solver module &mdash; Documentation Pendu (examen final) 1</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -32,7 +32,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            examen
+            Pendu (examen final)
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,7 +59,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">examen</a>
+          <a href="index.html">Pendu (examen final)</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -81,8 +81,24 @@
 <span id="solver-module"></span><h1>solver module<a class="headerlink" href="#module-solver" title="Lien vers cette rubrique"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="solver.generate_best_letters">
-<span class="sig-name descname"><span class="pre">generate_best_letters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">possible_words</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">letters_not_played</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/solver.html#generate_best_letters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#solver.generate_best_letters" title="Lien vers cette définition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">generate_best_letters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">possible_words</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">letters_not_played</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">letters_in_secret</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">letters_not_in_secret</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/solver.html#generate_best_letters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#solver.generate_best_letters" title="Lien vers cette définition"></a></dt>
+<dd><p>Calcule la meilleure lettre à jouer en fonction de sa fréquence moyenne dans les mots restants.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>possible_words</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Liste des mots restants.</p></li>
+<li><p><strong>letters_not_played</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Liste des lettres pas encore jouées.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Retourne:</dt><dd><p>str: Message indiquant la meilleure lettre à jouer avec sa fréquence moyenne.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="solver.generate_valid_words">

@@ -1,7 +1,4 @@
-import math
-from copy import copy
-
-
+from typing import Optional
 def generate_valid_words(possible_words: list[str], letters_in_secret: list[tuple[str, int]], letters_not_in_secret: list[str]):
     """
     Génère une liste des mots valides.
@@ -40,33 +37,31 @@ def generate_valid_words(possible_words: list[str], letters_in_secret: list[tupl
 
 
 
-def generate_best_letters(possible_words:list, letters_not_played:list[str]):
+def generate_best_letters(possible_words: list[str], letters_not_played: list[str], letters_in_secret: Optional[list[str]] = None,
+    letters_not_in_secret: Optional[list[str]] = None) -> str:
+    """
+    Calcule la meilleure lettre à jouer en fonction de sa fréquence moyenne dans les mots restants.
 
+    Arguments:
+        possible_words (list[str]): Liste des mots restants.
+        letters_not_played (list[str]): Liste des lettres pas encore jouées.
 
-    letter_average = []
-
+    Retourne:
+        str: Message indiquant la meilleure lettre à jouer avec sa fréquence moyenne.
+    """
+    freq_moyennes = []
     for letter in letters_not_played:
-        total_possibilities = 0
-        letters_in_secret = []
-        letters_not_in_secret = []
-
+        occ_total = 0
         for word in possible_words:
-            secret_word = word
-            if letter in secret_word:
-                letter_pos_tuple = (letter, secret_word.index(letter))
-                letters_in_secret.append(letter_pos_tuple)
-            else:
-                letters_not_in_secret.append(letter)
+            occ_lettre = word.count(letter)
+            occ_total += occ_lettre
+        freq_moyenne = occ_total/len(possible_words)
+        freq_moyennes.append(freq_moyenne)
+    index = freq_moyennes.index(max(freq_moyennes))
 
-            nb_of_valid_words = len(generate_valid_words(possible_words, letters_in_secret, letters_not_in_secret))
-            total_possibilities += nb_of_valid_words
-        average = total_possibilities/len(possible_words)
-        letter_average.append(average)
+    return (f"La meilleure lettre à jouer est {letters_not_played[index]}.")
 
-    minimum = min(letter_average)
-    pos = letter_average.index(minimum)
-    suggested_letter = letters_not_played[pos]
-    return f"La meilleure lettre à jouer est {suggested_letter}"
+
 
 
 
