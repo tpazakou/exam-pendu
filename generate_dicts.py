@@ -25,15 +25,23 @@ def lire_filtrer_mots(chemin_lexique: str, longueur: int) -> list[str]:
         list: Une liste de mots filtrés, en majuscules et sans accents,
               correspondant à la longueur spécifiée.
 
+    Raises:
+        ValueError: Si le fichier est vide.
+
     """
     with open(chemin_lexique, 'r', encoding='utf8') as f:
         # set pour éviter les doublons
         liste_mots = set()
-        for line in f.readlines():
-            # choisir le premier mot de la ligne
-            mot = line.split(" ")[0]
-            if len(mot) == longueur and "'" not in mot and "-" not in mot:
-                liste_mots.add(unidecode(mot.upper()))
+        texte = f.readlines()
+        if texte == []:
+            raise ValueError("Votre fichier est vide.")
+        else:
+            for line in texte:
+                # choisir le premier mot de la ligne
+                mot = line.strip()
+                mot = mot.split(" ")[0]
+                if len(mot) == longueur and "'" not in mot and "-" not in mot:
+                    liste_mots.add(unidecode(mot.upper()))
     return list(liste_mots)
 
 
